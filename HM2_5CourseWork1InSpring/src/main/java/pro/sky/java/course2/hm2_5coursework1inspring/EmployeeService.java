@@ -1,15 +1,18 @@
 package pro.sky.java.course2.hm2_5coursework1inspring;
 
+import java.util.Collection;
+import java.util.List;
+
 public interface EmployeeService {
 
-    String add(String lastName, String firstName);
+    Employee add(String lastName, String firstName);
 
 
-    String remove(String lastName, String firstName);
+    Employee remove(String lastName, String firstName);
 
-    String find(String lastName, String firstName);
+    Employee find(String lastName, String firstName);
 
-    String print();
+    Collection<Employee> print();
 
 
 }
