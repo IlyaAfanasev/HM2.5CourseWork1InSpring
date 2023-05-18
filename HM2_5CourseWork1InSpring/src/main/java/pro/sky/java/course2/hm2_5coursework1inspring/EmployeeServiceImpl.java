@@ -32,9 +32,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             addEmployee(lastName, firstName);
         } catch (ArrayIsFull e) {
-            return "В реестре больше нет места";
-        } catch (EmployeeAlreadyAdded employeeAlreadyAdded) {
-            return "Сотрудник "+lastName+" "+firstName+" уже внесен в реестр";
+            return e.getMessage();
+        } catch (EmployeeAlreadyAdded e) {
+            return e.getMessage();
         }
         return "Сотрудник "+lastName+" "+firstName + " добавлен в реестр";
     }
@@ -43,10 +43,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee(lastName, firstName);
 
         if (employees.size() >= maxsize) {
-            throw new ArrayIsFull();
+            throw new ArrayIsFull("В реестре больше нет места");
         }
         else if (employees.contains(employee)) {
-            throw new EmployeeAlreadyAdded();
+            throw new EmployeeAlreadyAdded("Сотрудник "+lastName+" "+firstName + " уже внесен в реестр");
         }else {
             employees.add(employee);
         }
@@ -56,16 +56,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     public String remove(String lastName, String firstName) {
         try {
             removeEmployee(lastName, firstName);
-        } catch (EmployeeNotFound employeeNotFound) {
-            return "Сотрудник "+lastName+" "+firstName + " не найден";
+        } catch (EmployeeNotFound e) {
+            return e.getMessage();
         }
 
-        return "Сотрудник удален из реестра";
+        return "Сотрудник "+lastName+" "+firstName + "удален из реестра";
     }
     public void removeEmployee(String lastName, String firstName) {
         Employee employee= new Employee(lastName, firstName);
         if (!employees.contains(employee)) {
-            throw new EmployeeNotFound();
+            throw new EmployeeNotFound("Сотрудник не найден");
         }
         else {
             employees.remove(employee);
@@ -78,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             findEmployee(lastName, firstName);
         } catch (EmployeeNotFound e) {
-            return e.toString();
+    return e.getMessage();
         }
 
     Employee employee=new Employee(lastName, firstName);
@@ -89,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee(lastName, firstName);
 
         if (!employees.contains(employee)) {
-            throw new EmployeeNotFound();
+            throw new EmployeeNotFound("Сотрудник не найден");
         }
 
 
@@ -100,17 +100,5 @@ public class EmployeeServiceImpl implements EmployeeService {
     public String print() {
         return employees.toString();
     }
-
-//    @Override
-//    public String toString() {
-//        for (Employee employee : employees) {
-//
-//            if (employee != null) {
-//                System.out.println(employee);
-//            }
-//        }
-//        return "";
-//
-//    }
 
 }
